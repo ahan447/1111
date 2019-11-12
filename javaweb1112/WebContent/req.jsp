@@ -9,8 +9,19 @@
 
 </head>
 <body>
+<!--초기화 파라미터 읽기 -->
+<%
+	String url =
+		application.getInitParameter("dburl");
+	out.print("초기화 파라미터 : " + url);
+
+
+%>
+
+
  <!-- 태그로 요청 : a, form -->
  <a href='reqinfo.jsp'>request객체 사용</a><br/>
+ <a href='parameterread.jsp'>parameter 사용</a><br/>
 </body>
 
 <!-- javascript로 요청 -->

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요청 파일</title>
+<style>
+	#btn:active{
+		border:3px solid red;
+	}
+
+</style>
+</head>
+<body>
+	<a href='#'><img src = '../images/A++.jpg'
+	width="600" height="600" id="btn" />
+	</a>
+</body>
+<script>
+	document.getElementById('btn').
+	addEventListener('click',function(e){
+		//요청 전송
+		location.href = 'process.jsp';
+		
+	})
+
+</script>
+</html>
