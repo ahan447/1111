@@ -1,14 +1,15 @@
-package vo;
+package vo2;
 
 import java.util.Date;
 
-public class board {
+public class Board2 {
 	private int num;
 	private String title;
 	private String content;
 	private String name;
 	private int cnt;
 	private Date writedate;
+	
 	public int getNum() {
 		return num;
 	}
