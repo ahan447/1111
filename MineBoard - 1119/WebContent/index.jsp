@@ -8,6 +8,8 @@
 </head>
 <body>
 	<a href="./board/insert">게시물 작성</a><br/>
-	<a href="./board/list">게시물 목록 보기</a>
+	<a href="./board/list">게시물 목록 보기</a><br/>
+	<a href="./board/join">회원가입</a><br/>
+	<a href="./board/login">로그인</a><br/>
 </body>
 </html>

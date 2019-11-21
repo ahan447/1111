@@ -23,11 +23,14 @@ public class TestSample {
 		//BoardRepository dao = BoardRepository.sharedInstance();
 		//System.out.println(dao.boardList());
 		
-	BoardRepository dao = BoardRepository.sharedInstance();
+	//BoardRepository dao = BoardRepository.sharedInstance();
 	//System.out.println(dao.cntUpdate(2));	
-	System.out.println(dao.boardDetail(3));
+	//System.out.println(dao.boardDetail(3));
 	
-	
+		//삭제 테스트
+		BoardRepository dao = BoardRepository.sharedInstance();
+		System.out.println(dao.boardDelete(2));
+		
 		
 	}
 }

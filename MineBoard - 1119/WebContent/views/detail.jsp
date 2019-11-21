@@ -17,7 +17,10 @@
 </body>
 <script>
 	document.getElementById("delbtn").addEventListener("click" , function(e){
+		 var r = confirm("정말로 삭제?")
+		 if(r == true){
 		location.href = "delete?num=${board.num}";
+	}
 	});
 </script>
 </html>

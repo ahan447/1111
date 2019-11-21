@@ -77,12 +77,59 @@ public class boardController extends HttpServlet {
 			RequestDispatcher dispatcher1 = request.getRequestDispatcher("../views/detail.jsp");
 			dispatcher1.forward(request, response);
 			break;
+		case "delete":
+			boolean r = service.boardDelete(request);	
+			if(r == true) {
+				response.sendRedirect("list");
+			}else {
+				response.sendRedirect("detail");
 			
-			
+			}
+			break;
+		case"update":
+			if("GET".equals(request.getMethod())) {
+			Board2 board1= service.boardGet(request);
+			request.setAttribute("Board2", board1);
+			RequestDispatcher dispatcher2 =
+					request.getRequestDispatcher("../views/update.jsp");
+			dispatcher2.forward(request, response);
+			}else {
+				boolean r1 = service.boardUpdate(request);
+				if(r1 ==true) {
+					response.sendRedirect("list");
+				}else {
+					response.sendRedirect("detail");
+				}
+			}
+			break;
+		case "join":
+			if("GET".equals(request.getMethod())) {
+				RequestDispatcher dispatcher3 = 
+						request.getRequestDispatcher("../views/join.jsp");
+				dispatcher3.forward(request, response);
+			}else {
+				service.memInsert(request);
+				response.sendRedirect("../");
+				
+			}
+			break;
+		case "login":
+			if("GET".equals(request.getMethod())) {
+				RequestDispatcher dispatcher4 = 
+						request.getRequestDispatcher("../views/login.jsp");
+				dispatcher4.forward(request, response);
+			}else {
+				boolean result = service.login(request);
+				if(result == true) {
+					response.sendRedirect("../");
+				}else {
+					response.sendRedirect("login");
+				}
+			}
 			
 			
 		}
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

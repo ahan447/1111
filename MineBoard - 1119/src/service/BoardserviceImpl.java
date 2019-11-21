@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import dao.BoardRepository;
 import vo2.Board2;
 
@@ -33,13 +35,7 @@ public class BoardserviceImpl implements Boardservice {
 	public boolean boardInsert(HttpServletRequest request) {
 		boolean result = false;
 	
-		// 파라미터 인코딩 실행
-		try {
-			request.setCharacterEncoding("UTF-8");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		e.printStackTrace();
-		}
+		 
 		//파라미터 전체 읽기
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
@@ -98,7 +94,7 @@ public class BoardserviceImpl implements Boardservice {
 	public Board2 boardDetail(HttpServletRequest request) {
 		 Board2 board = null;
 		
-		 //파라미터 인코딩
+		
 
 			// 파라미터 인코딩 실행
 			try {
@@ -118,6 +114,96 @@ public class BoardserviceImpl implements Boardservice {
 				 
 	return board;
 	}
+
+	@Override
+	public boolean boardDelete(HttpServletRequest request) {
+		boolean result = false;
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		// 파라미터 읽기
+		String num = request.getParameter("num");
+		int r = dao.boardDelete(Integer.parseInt(num));
+		if (r >= 0) {
+			result = true;
+		}
+		return result;
+	}
+
+	@Override
+	public Board2 boardGet(HttpServletRequest request) {
+		Board2 board = null;
+ 
+		//파라미터 읽기
+		String num = request.getParameter("num");
+		
+		//파라미터를 DAO 메소드에 맞게 변환해서 DAO 메소드 호출
+		board = dao.boardDetail(Integer.parseInt(num));
+		
+		
+		return board;
+	}
+
+@Override
+public boolean boardUpdate(HttpServletRequest request) {
+	boolean result = false;
+	//파라미터 인코딩
+	try {
+		request.setCharacterEncoding("UTF-8");
+	} catch (Exception e) {
+		System.out.println(e.getMessage());
+	}
+	//파라미터 읽기
+	String num = request.getParameter("num");
+	String title = request.getParameter("title");
+	String content = request.getParameter("content");
 	
+	//파라미터를 DAO 에 사용할 수 있도록 수정
+	Board2 board = new Board2();
+	board.setNum(Integer.parseInt(num));
+	board.setTitle(title);
+	board.setContent(content);
+	
+	//DAO 메소드 호출
+	int r = dao.boardUpdate(board);
+	if(r > 0) {
+		result = true;
+	}
+	return result;
+}
+
+@Override
+public void memInsert(HttpServletRequest request) {
+	String id = request.getParameter("id");
+	String pw = request.getParameter("pw");
+	//pw 를 암호화
+	pw = BCrypt.hashpw(pw, BCrypt.gensalt());
+	//데이터베이스에 저장
+	dao.memInsert(id, pw);
+	
+	
+}
+
+@Override
+public boolean login(HttpServletRequest request) {
+	boolean result = false;
+	//입력한 아이디와 비밀번호를 읽어오기
+	String id = request.getParameter("id");
+	String pw = request.getParameter("pw");
+	
+	//id를 가지고 비밀번호 찾기
+	String password = dao.getPw(id);
+	
+	//원본과 암호화된 문자열을 비교
+	if(password != null && BCrypt.checkpw(pw,password) == true) {
+		//로그인 성공
+		request.getSession().setAttribute("id", id);
+		result = true;
+	}
+	
+	return result;
+}
 
 }
