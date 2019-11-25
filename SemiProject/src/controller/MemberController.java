@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import service.MemberService;
 import service.MemberServiceImpl;
 
@@ -40,7 +42,17 @@ public class MemberController extends HttpServlet {
 				dispatcher = request.getRequestDispatcher("../views/mem/join.jsp");
 				dispatcher.forward(request, response);
 			} else {
+				//서비스 메소드 호출
+				boolean b = memberService.join(request);
+				if(b) {
+					//성공하면 세션에 msg를 담아서 로그인 페이지로 이동
+					request.getSession().setAttribute("msg", "회원가입에 성공");
+				}else {
+					//실패하면 세션에 msg를 담아서 회원가입 페이지로 이동
 
+					request.getSession().setAttribute("msg", "회원가입에 실패");
+					response.sendRedirect("join");
+				}
 			}
 			break;
 		case "emailcheck" :
@@ -50,7 +62,27 @@ public class MemberController extends HttpServlet {
 			dispatcher=
 					request.getRequestDispatcher("../views/mem/emailcheck.jsp");
 			dispatcher.forward(request, response);
+			break; 
+		case "nicknamecheck":
+			//서비스를 호출
+			JSONObject r = memberService.nicknameCheck(request);
+			//호출 결과 저장
+			request.setAttribute("result", r);
+			//결과 페이지로 포워딩'
+			dispatcher = 
+					request.getRequestDispatcher("../views/mem/nicknamecheck.jsp");
+			dispatcher.forward(request, response);
 			break;
+		case "login":
+			if("GET".equals(request.getMethod())) {
+				
+				dispatcher=
+						request.getRequestDispatcher("../views/mem/login.jsp");
+				dispatcher.forward(request, response);
+			}else {
+			
+			}
+			break; 
 		}
 	}
 

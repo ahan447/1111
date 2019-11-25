@@ -1,5 +1,7 @@
 package vo;
 
+import java.sql.Date;
+
 import oracle.sql.DATE;
 
 public class Member {
@@ -8,7 +10,7 @@ public class Member {
 	private String name;
 	private String nickname;
 	private String image;
-	private DATE birthday;
+	private Date birthday;
 	public String getEmail() {
 		return email;
 	}
@@ -39,10 +41,10 @@ public class Member {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public DATE getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(DATE birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 	@Override

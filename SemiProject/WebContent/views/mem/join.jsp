@@ -103,17 +103,132 @@ document.getElementById("image").addEventListener('change', function(e){
 	}
 });
 
+//email 입력 영역과 이메일 관련 메시지 출력영역을 찾아오기
 var email = document.getElementById("email");
-email.addEventListener("focusout", function(e){
-	//입력한 값 가져오기
-	var val = email.value;
+var emaildisp = document.getElementById("emaildisp");
+var corp = document.getElementById("corp");
+
+// 이메일 체크 여부를 저장하기 위한 변수
+var emailcheck = false;
+
+function f(e){
+	var event = e || window.event;
+	// 입력한 값 가져오기
+	var val = email.value.trim();
+	if(val.trim().length <= 0){
+		emaildisp.innerHTML = "이메일을 입력하세요";
+		emaildisp.style.color = "RED";
+		email.focus;
+		event.preventDefault();
+	}
+	//val = val + "@" + corp.value;
+	else if(val.length > 1){
+		//val = val + "@" + corp.value;
+		// ajax 객체 생성
+		var request = new XMLHttpRequest();
+		// ajax 요청 경로 생성
+		request.open("GET", "emailcheck?email=" + val);
+	// 요청 전송
+		request.send("");
+		// 응답이 왔을 때 호출되는 콜백(Callback - 이벤트가 발생하면 호출되는) 메소드 등록
+		request.onreadystatechange = function(e){
+			if(request.readyState == 4){
+				// 서버가 정상적으로 처리하고 정상 응답을 하면
+				if(request.status >= 200 && request.status < 300){
+					// 전송되어 온 데이터 확인
+					var result = request.responseText;
+					if(result.trim() == "true"){
+						emaildisp.innerHTML = "사용 가능한 이메일";
+						emaildisp.style.color = "BLUE";
+						emailcheck = true;
+					}else{
+						emaildisp.innerHTML = "사용 불가능한 이메일";
+						emaildisp.style.color = "RED";
+						emailcheck = false;
+					}
+				}else{
+					alert(request.status);
+				}
+			}
+		};
+	}	
+}
+
+
+
 	
-	if(val.length> 1){
-		alert(val);
-	})
-});
-
-
-</script>
+	var nickname = document.getEvertById("nickname");
+	var nicknamedisp = documentl.getElementById("nickname");
+	
+	var  nicknameCher= false;
+	
+	nickname.addEventListener("focusout", function(e){
+		var val = nickname.value;
+		//닉네임을 입력하지 않았으면 닉네임 중복체크를 하지 않음
+		if(val.trim().legth< 1){
+			 nicknamecheck = false;
+			return;
+		}});
+		//자바스크립트에서의 인코딩
+		//URL 이나 파라미터에는 영문과 숫자를 제외하고는 인코딩을 되서 대입되어야 함
+		//val = escape(val);
+		
+		
+		var request = new XMLHttpRequesdt();
+		reqyest.open('GET', 'nicknamecheck?nickmene =' + val);
+		request.send('');
+		request.onreadystatechange = function(e){
+			//readyState는 서버로 오는 응답의 상태 : 4번이 응답을 한 경우
+			//0은 객체만 생성한 상태, 1이면 요청을 한 상태
+			//2이면 send()를 호출한 상태, 3이면 서버에서 응답이 오기 시작한 상태
+			if(request.readState ==4){
+				//100번대 처리 중, 200번대 정상응답
+				//300번대 리다이렉트 , 400번대 클라이언트 오류
+				//500번대는 서버오류
+				if(request.statue >= 200 && request.status < 300){
+					var result = request.responseText;
+					//JSON Parsion
+					var obj = JSON.parse(result);
+					//동일한 닉네임이 없는 경우
+					if(obj.result == "true"){
+						nicknamedisp.innerHTML = "사용 가능한 닉네임";
+						nicknamedisp.style.color = 'blue'
+						nicknamecheck = true;
+					}
+					//동일한 닉네임이 있는 경우
+					else{
+						nicknamedisp.innerHTML = "사용 가능한 닉네임";
+						nicknamedisp.style.color = 'red'
+						nicknamecheck = false;
+						
+					}
+				}
+			}
+		};
+	
+	//폼의 데이터를 전송할 때
+	document.getElementById('joinform').addEventListener(
+			'submit' , function(e){
+				//이벤트 객체 생성
+				var event = e || window.event;
+				
+				if(emailcheck == false){
+					email.focus();
+					emaildisp.innerHTML = "이메일이 유효하지 않음"
+					emaildsip.style.color = "red";
+					//기본 이벤트 제거 - 폼의 데이터를 전송하지 않음
+					event.preventDefault();
+					return;
+				}
+				if(nicknamecheck == false){
+					email.focus();
+					emaildisp.innerHTML = "별명이 유효하지 않음"
+					emaildsip.style.color = "red";
+					//기본 이벤트 제거 - 폼의 데이터를 전송하지 않음
+					event.preventDefault();
+					return;}
+				
+			});
+	</script>
 </body>
 </html>
